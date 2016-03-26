@@ -21,6 +21,10 @@ func (a vector) Add(b vector) vector {
 	return VectorsAdd(a, b)
 }
 
+func (a vector) Subtract(b vector) vector {
+	return VectorsSubtract(a, b)
+}
+
 func (a vector) Scale(r float64) vector {
 	return VectorScaleByScalar(a, r)
 }
@@ -47,6 +51,10 @@ func VectorLength(a vector) float64 {
 
 func VectorsAdd(a vector, b vector) vector {
 	return vector{a.x + b.x, a.y + b.y, a.z + b.z}
+}
+
+func VectorsSubtract(a vector, b vector) vector {
+	return vector{a.x - b.x, a.y - b.y, a.z - b.z}
 }
 
 func VectorScaleByScalar(a vector, r float64) vector {

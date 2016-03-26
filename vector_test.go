@@ -75,6 +75,29 @@ func TestAdd(t *testing.T) {
 	}
 }
 
+func TestSubtract(t *testing.T) {
+	cases := []struct {
+		a, b, want vector
+	}{
+		{vector{1, 2, 3}, vector{-1, -2, -3}, vector{2, 4, 6}},
+		{vector{-1, -2, -3}, vector{1, 2, 3}, vector{-2, -4, -6}},
+		{vector{0, 0, 0}, vector{0, 0, 0}, vector{0, 0, 0}},
+		{vector{5, 5, 5}, vector{10, 10, 10}, vector{-5, -5, -5}},
+	}
+	for _, c := range cases {
+		got := VectorsSubtract(c.a, c.b)
+		if got != c.want {
+			t.Errorf("VectorsSubtract(%s, %s) expected %s, got %s", c.a, c.b, c.want, got)
+		}
+	}
+	for _, c := range cases {
+		got := c.a.Subtract(c.b)
+		if got != c.want {
+			t.Errorf("%s.Subtract(%s) expected %s, got %s", c.a, c.b, c.want, got)
+		}
+	}
+}
+
 func TestScale(t *testing.T) {
 	cases := []struct {
 		v    vector
