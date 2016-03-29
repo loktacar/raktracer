@@ -4,16 +4,16 @@ import (
 	"fmt"
 )
 
-type sphere struct {
-	pos vector
+type Sphere struct {
+	pos Vector
 	r   float64
 }
 
-func (s sphere) String() string {
+func (s Sphere) String() string {
 	return SphereString(s)
 }
 
-func (s sphere) Intersects(r ray) (bool, float64) {
+func (s Sphere) Intersects(r Ray) (bool, float64) {
 	// Algorithm source: http://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/minimal-ray-tracer-rendering-spheres
 	l := r.pos.Subtract(s.pos)
 
@@ -45,6 +45,6 @@ func (s sphere) Intersects(r ray) (bool, float64) {
 	return true, t0
 }
 
-func SphereString(s sphere) string {
-	return fmt.Sprintf("sphere{pos:%s r:%.2f}", s.pos, s.r)
+func SphereString(s Sphere) string {
+	return fmt.Sprintf("Sphere{pos:%s r:%.2f}", s.pos, s.r)
 }

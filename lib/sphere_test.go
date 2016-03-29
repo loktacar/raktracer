@@ -6,11 +6,11 @@ import (
 
 func TestSphereString(t *testing.T) {
 	cases := []struct {
-		s    sphere
+		s    Sphere
 		want string
 	}{
-		{sphere{vector{0, 0, 0}, 0}, "sphere{pos:[0.00 0.00 0.00] r:0.00}"},
-		{sphere{vector{1, 2, 3}, 0.99}, "sphere{pos:[1.00 2.00 3.00] r:0.99}"},
+		{Sphere{Vector{0, 0, 0}, 0}, "Sphere{pos:[0.00 0.00 0.00] r:0.00}"},
+		{Sphere{Vector{1, 2, 3}, 0.99}, "Sphere{pos:[1.00 2.00 3.00] r:0.99}"},
 	}
 	for _, c := range cases {
 		got := SphereString(c.s)
@@ -28,16 +28,16 @@ func TestSphereString(t *testing.T) {
 
 func TestSphereIntersects(t *testing.T) {
 	cases := []struct {
-		s            sphere
-		r            ray
+		s            Sphere
+		r            Ray
 		wantHit      bool
 		wantDistance float64
 	}{
-		{sphere{vector{0, 0, 10}, 1}, ray{vector{0, 0, 20}, vector{0, 0, -1}}, true, 9},
-		{sphere{vector{0, 0, 10}, 1}, ray{vector{0, 0, 0}, vector{0, 0, 1}}, true, 9},
-		{sphere{vector{0, 0, 10}, 1}, ray{vector{0, 0, 0}, vector{0, 1, 0}}, false, 0},
-		{sphere{vector{0, 0, 0}, 4}, ray{vector{0, 5, 0}, vector{0, -1, 0}}, true, 1},
-		{sphere{vector{0, 0, 0}, 20}, ray{vector{0, 5, 0}, vector{0, -1, 0}}, true, 0},
+		{Sphere{Vector{0, 0, 10}, 1}, Ray{Vector{0, 0, 20}, Vector{0, 0, -1}}, true, 9},
+		{Sphere{Vector{0, 0, 10}, 1}, Ray{Vector{0, 0, 0}, Vector{0, 0, 1}}, true, 9},
+		{Sphere{Vector{0, 0, 10}, 1}, Ray{Vector{0, 0, 0}, Vector{0, 1, 0}}, false, 0},
+		{Sphere{Vector{0, 0, 0}, 4}, Ray{Vector{0, 5, 0}, Vector{0, -1, 0}}, true, 1},
+		{Sphere{Vector{0, 0, 0}, 20}, Ray{Vector{0, 5, 0}, Vector{0, -1, 0}}, true, 0},
 	}
 	for _, c := range cases {
 		gotHit, gotDistance := c.s.Intersects(c.r)

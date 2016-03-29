@@ -7,11 +7,11 @@ import (
 
 func TestVectorString(t *testing.T) {
 	cases := []struct {
-		v    vector
+		v    Vector
 		want string
 	}{
-		{vector{0, 0, 0}, "[0.00 0.00 0.00]"},
-		{vector{1, 0.5, 0.99}, "[1.00 0.50 0.99]"},
+		{Vector{0, 0, 0}, "[0.00 0.00 0.00]"},
+		{Vector{1, 0.5, 0.99}, "[1.00 0.50 0.99]"},
 	}
 	for _, c := range cases {
 		got := VectorString(c.v)
@@ -29,14 +29,14 @@ func TestVectorString(t *testing.T) {
 
 func TestVectorLength(t *testing.T) {
 	cases := []struct {
-		v    vector
+		v    Vector
 		want float64
 	}{
-		{vector{0, 0, 0}, 0},
-		{vector{1, 0, 0}, 1},
-		{vector{0, 1, 0}, 1},
-		{vector{0, 0, 1}, 1},
-		{vector{5, 10, 10}, 15},
+		{Vector{0, 0, 0}, 0},
+		{Vector{1, 0, 0}, 1},
+		{Vector{0, 1, 0}, 1},
+		{Vector{0, 0, 1}, 1},
+		{Vector{5, 10, 10}, 15},
 	}
 	for _, c := range cases {
 		got := VectorLength(c.v)
@@ -54,12 +54,12 @@ func TestVectorLength(t *testing.T) {
 
 func TestAdd(t *testing.T) {
 	cases := []struct {
-		a, b, want vector
+		a, b, want Vector
 	}{
-		{vector{1, 2, 3}, vector{-1, -2, -3}, vector{0, 0, 0}},
-		{vector{-1, -2, -3}, vector{1, 2, 3}, vector{0, 0, 0}},
-		{vector{0, 0, 0}, vector{0, 0, 0}, vector{0, 0, 0}},
-		{vector{5, 5, 5}, vector{10, 10, 10}, vector{15, 15, 15}},
+		{Vector{1, 2, 3}, Vector{-1, -2, -3}, Vector{0, 0, 0}},
+		{Vector{-1, -2, -3}, Vector{1, 2, 3}, Vector{0, 0, 0}},
+		{Vector{0, 0, 0}, Vector{0, 0, 0}, Vector{0, 0, 0}},
+		{Vector{5, 5, 5}, Vector{10, 10, 10}, Vector{15, 15, 15}},
 	}
 	for _, c := range cases {
 		got := VectorsAdd(c.a, c.b)
@@ -77,12 +77,12 @@ func TestAdd(t *testing.T) {
 
 func TestSubtract(t *testing.T) {
 	cases := []struct {
-		a, b, want vector
+		a, b, want Vector
 	}{
-		{vector{1, 2, 3}, vector{-1, -2, -3}, vector{2, 4, 6}},
-		{vector{-1, -2, -3}, vector{1, 2, 3}, vector{-2, -4, -6}},
-		{vector{0, 0, 0}, vector{0, 0, 0}, vector{0, 0, 0}},
-		{vector{5, 5, 5}, vector{10, 10, 10}, vector{-5, -5, -5}},
+		{Vector{1, 2, 3}, Vector{-1, -2, -3}, Vector{2, 4, 6}},
+		{Vector{-1, -2, -3}, Vector{1, 2, 3}, Vector{-2, -4, -6}},
+		{Vector{0, 0, 0}, Vector{0, 0, 0}, Vector{0, 0, 0}},
+		{Vector{5, 5, 5}, Vector{10, 10, 10}, Vector{-5, -5, -5}},
 	}
 	for _, c := range cases {
 		got := VectorsSubtract(c.a, c.b)
@@ -100,13 +100,13 @@ func TestSubtract(t *testing.T) {
 
 func TestScale(t *testing.T) {
 	cases := []struct {
-		v    vector
+		v    Vector
 		s    float64
-		want vector
+		want Vector
 	}{
-		{vector{0, 0, 0}, 5, vector{0, 0, 0}},
-		{vector{1, 1, 1}, 5, vector{5, 5, 5}},
-		{vector{-1, 0.5, 12}, 2, vector{-2, 1, 24}},
+		{Vector{0, 0, 0}, 5, Vector{0, 0, 0}},
+		{Vector{1, 1, 1}, 5, Vector{5, 5, 5}},
+		{Vector{-1, 0.5, 12}, 2, Vector{-2, 1, 24}},
 	}
 	for _, c := range cases {
 		got := VectorScaleByScalar(c.v, c.s)
@@ -124,13 +124,13 @@ func TestScale(t *testing.T) {
 
 func TestNormalize(t *testing.T) {
 	cases := []struct {
-		v    vector
-		want vector
+		v    Vector
+		want Vector
 	}{
-		{vector{1, 0, 0}, vector{1, 0, 0}},
-		{vector{0, 1, 0}, vector{0, 1, 0}},
-		{vector{0, 0, 1}, vector{0, 0, 1}},
-		{vector{5, 10, 10}, vector{5. / 15, 10. / 15, 10. / 15}},
+		{Vector{1, 0, 0}, Vector{1, 0, 0}},
+		{Vector{0, 1, 0}, Vector{0, 1, 0}},
+		{Vector{0, 0, 1}, Vector{0, 0, 1}},
+		{Vector{5, 10, 10}, Vector{5. / 15, 10. / 15, 10. / 15}},
 	}
 	for _, c := range cases {
 		got := VectorNormalize(c.v)
@@ -145,7 +145,7 @@ func TestNormalize(t *testing.T) {
 		}
 	}
 
-	v1 := vector{0, 0, 0}
+	v1 := Vector{0, 0, 0}
 	vN := VectorNormalize(v1)
 	if !math.IsNaN(vN.x) && !math.IsNaN(vN.y) && !math.IsNaN(vN.z) {
 		t.Errorf("VectorNormalize(%s) expected NaN results, got %s", v1, vN)
@@ -158,14 +158,14 @@ func TestNormalize(t *testing.T) {
 
 func TestDotProduct(t *testing.T) {
 	cases := []struct {
-		a    vector
-		b    vector
+		a    Vector
+		b    Vector
 		want float64
 	}{
-		{vector{0, 0, 0}, vector{0, 0, 0}, 0},
-		{vector{1, 2, 3}, vector{1, 2, 3}, 14},
-		{vector{3, 3, 3}, vector{3, 3, 3}, 27},
-		{vector{1, 0, -1}, vector{1, 0, -1}, 2},
+		{Vector{0, 0, 0}, Vector{0, 0, 0}, 0},
+		{Vector{1, 2, 3}, Vector{1, 2, 3}, 14},
+		{Vector{3, 3, 3}, Vector{3, 3, 3}, 27},
+		{Vector{1, 0, -1}, Vector{1, 0, -1}, 2},
 	}
 	for _, c := range cases {
 		got := VectorsDotProduct(c.a, c.b)
@@ -183,13 +183,13 @@ func TestDotProduct(t *testing.T) {
 
 func TestCrossProduct(t *testing.T) {
 	cases := []struct {
-		a    vector
-		b    vector
-		want vector
+		a    Vector
+		b    Vector
+		want Vector
 	}{
-		{vector{0, 0, 0}, vector{0, 0, 0}, vector{0, 0, 0}},
-		{vector{1, 2, 3}, vector{1, 2, 3}, vector{0, 0, 0}},
-		{vector{1, 2, 3}, vector{4, 5, 6}, vector{-3, 6, -3}},
+		{Vector{0, 0, 0}, Vector{0, 0, 0}, Vector{0, 0, 0}},
+		{Vector{1, 2, 3}, Vector{1, 2, 3}, Vector{0, 0, 0}},
+		{Vector{1, 2, 3}, Vector{4, 5, 6}, Vector{-3, 6, -3}},
 	}
 	for _, c := range cases {
 		got := VectorsCrossProduct(c.a, c.b)
