@@ -147,11 +147,11 @@ func TestNormalize(t *testing.T) {
 
 	v1 := Vector{0, 0, 0}
 	vN := VectorNormalize(v1)
-	if !math.IsNaN(vN.x) && !math.IsNaN(vN.y) && !math.IsNaN(vN.z) {
+	if !math.IsNaN(vN.X) && !math.IsNaN(vN.Y) && !math.IsNaN(vN.Z) {
 		t.Errorf("VectorNormalize(%s) expected NaN results, got %s", v1, vN)
 	}
 	vN2 := v1.Normalize()
-	if !math.IsNaN(vN2.x) && !math.IsNaN(vN2.y) && !math.IsNaN(vN2.z) {
+	if !math.IsNaN(vN2.X) && !math.IsNaN(vN2.Y) && !math.IsNaN(vN2.Z) {
 		t.Errorf("%s.Normalize() expected NaN results, got %s", v1, vN2)
 	}
 }

@@ -9,8 +9,8 @@ func TestSphereString(t *testing.T) {
 		s    Sphere
 		want string
 	}{
-		{Sphere{Vector{0, 0, 0}, 0}, "Sphere{pos:[0.00 0.00 0.00] r:0.00}"},
-		{Sphere{Vector{1, 2, 3}, 0.99}, "Sphere{pos:[1.00 2.00 3.00] r:0.99}"},
+		{Sphere{Vector{0, 0, 0}, 0}, "Sphere{Pos:[0.00 0.00 0.00] R:0.00}"},
+		{Sphere{Vector{1, 2, 3}, 0.99}, "Sphere{Pos:[1.00 2.00 3.00] R:0.99}"},
 	}
 	for _, c := range cases {
 		got := SphereString(c.s)

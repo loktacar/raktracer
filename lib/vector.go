@@ -6,7 +6,7 @@ import (
 )
 
 type Vector struct {
-	x, y, z float64
+	X, Y, Z float64
 }
 
 func (a Vector) String() string {
@@ -42,34 +42,34 @@ func (a Vector) Cross(b Vector) Vector {
 }
 
 func VectorString(a Vector) string {
-	return fmt.Sprintf("[%.2f %.2f %.2f]", a.x, a.y, a.z)
+	return fmt.Sprintf("[%.2f %.2f %.2f]", a.X, a.Y, a.Z)
 }
 
 func VectorLength(a Vector) float64 {
-	return math.Sqrt(a.x*a.x + a.y*a.y + a.z*a.z)
+	return math.Sqrt(a.X*a.X + a.Y*a.Y + a.Z*a.Z)
 }
 
 func VectorsAdd(a Vector, b Vector) Vector {
-	return Vector{a.x + b.x, a.y + b.y, a.z + b.z}
+	return Vector{a.X + b.X, a.Y + b.Y, a.Z + b.Z}
 }
 
 func VectorsSubtract(a Vector, b Vector) Vector {
-	return Vector{a.x - b.x, a.y - b.y, a.z - b.z}
+	return Vector{a.X - b.X, a.Y - b.Y, a.Z - b.Z}
 }
 
 func VectorScaleByScalar(a Vector, r float64) Vector {
-	return Vector{a.x * r, a.y * r, a.z * r}
+	return Vector{a.X * r, a.Y * r, a.Z * r}
 }
 
 func VectorNormalize(a Vector) Vector {
 	factor := 1.0 / a.Length()
-	return Vector{a.x * factor, a.y * factor, a.z * factor}
+	return Vector{a.X * factor, a.Y * factor, a.Z * factor}
 }
 
 func VectorsDotProduct(a Vector, b Vector) float64 {
-	return a.x*b.x + a.y*b.y + a.z*b.z
+	return a.X*b.X + a.Y*b.Y + a.Z*b.Z
 }
 
 func VectorsCrossProduct(a Vector, b Vector) Vector {
-	return Vector{a.y*b.z - a.z*b.y, a.z*b.x - a.x*b.z, a.x*b.y - a.y*b.x}
+	return Vector{a.Y*b.Z - a.Z*b.Y, a.Z*b.X - a.X*b.Z, a.X*b.Y - a.Y*b.X}
 }

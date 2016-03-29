@@ -5,9 +5,9 @@ import (
 )
 
 type Ray struct {
-	pos, dir Vector
+	Pos, Dir Vector
 }
 
 func (r Ray) String() string {
-	return fmt.Sprintf("Ray{pos:%s dir:%s}", r.pos, r.dir)
+	return fmt.Sprintf("Ray{Pos:%s Dir:%s}", r.Pos, r.Dir)
 }

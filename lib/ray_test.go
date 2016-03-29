@@ -11,11 +11,11 @@ func TestRayString(t *testing.T) {
 	}{
 		{
 			Ray{Vector{0, 0, 0}, Vector{0, 0, 0}},
-			"Ray{pos:[0.00 0.00 0.00] dir:[0.00 0.00 0.00]}",
+			"Ray{Pos:[0.00 0.00 0.00] Dir:[0.00 0.00 0.00]}",
 		},
 		{
 			Ray{Vector{1, 0.5, 0.99}, Vector{1, 2, 3}},
-			"Ray{pos:[1.00 0.50 0.99] dir:[1.00 2.00 3.00]}",
+			"Ray{Pos:[1.00 0.50 0.99] Dir:[1.00 2.00 3.00]}",
 		},
 	}
 	for _, c := range cases {
