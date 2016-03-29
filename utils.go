@@ -5,6 +5,7 @@ import (
 )
 
 func SolveQuadratic(a float64, b float64, c float64) (bool, float64, float64) {
+	// Algorithm source: http://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/minimal-ray-tracer-rendering-spheres
 	var x0, x1, discr float64
 
 	discr = b*b - 4*a*c

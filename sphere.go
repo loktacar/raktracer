@@ -14,7 +14,7 @@ func (s sphere) String() string {
 }
 
 func (s sphere) Intersects(r ray) (bool, float64) {
-	// Algorith source: http://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/minimal-ray-tracer-rendering-spheres
+	// Algorithm source: http://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/minimal-ray-tracer-rendering-spheres
 	l := r.pos.Subtract(s.pos)
 
 	a := r.dir.Dot(r.dir)
