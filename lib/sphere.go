@@ -32,7 +32,7 @@ func (s Sphere) Intersects(r Ray) (bool, float64) {
 		return false, 0
 	}
 
-	if t0 < 0 {
+	if t0 < t1 {
 		k := t0
 		t0 = t1
 		t1 = k
