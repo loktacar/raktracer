@@ -1,7 +1,7 @@
 package main
 
 import (
-	//"fmt"
+	"fmt"
 	"github.com/loktacar/raktracer/lib"
 	"image"
 	"image/color"
@@ -10,7 +10,10 @@ import (
 	"os"
 )
 
-var img = image.NewRGBA(image.Rect(0, 0, 512, 512))
+var imgWidth = 1024
+var imgHeight = 1024
+
+var img = image.NewRGBA(image.Rect(0, 0, imgWidth, imgHeight))
 
 var black = color.RGBA{0, 0, 0, 255}
 
@@ -24,49 +27,55 @@ func main() {
 	light := raktracer.Vector{256, 512, -500}
 	//light := raktracer.Vector{0, 0, -1000}
 
-	for x := 0; x < 512; x++ {
-		for y := 0; y < 512; y++ {
+	for x := 0; x < imgWidth; x++ {
+		for y := 0; y < imgHeight; y++ {
 			img.Set(x, y, black)
 		}
 	}
 
-	for x := -256; x < 256; x++ {
-		for y := -256; y < 256; y++ {
+	for x := -imgWidth / 2; x < imgWidth/2; x++ {
+		for y := -imgHeight / 2; y < imgHeight/2; y++ {
 			camPos := raktracer.Vector{float64(x), float64(y), 0}
 
 			r := raktracer.Ray{camPos, raktracer.Vector{0, 0, 1}}
+
+			var hitDist = -1.00
+			var hitSphere raktracer.Sphere
+			var intersect raktracer.Vector
+
 			for _, s := range spheres {
 				i, dist := s.Intersects(r)
-				if i {
-					intersect := camPos.Add(r.Dir.Scale(dist))
-
-					lV := light.Subtract(intersect).Normalize()
-
-					lightIntersection := false
-					lR := raktracer.Ray{intersect, lV}
-					for _, s2 := range spheres {
-						if s2 != s {
-							iL, _ := s2.Intersects(lR)
-							lightIntersection = iL || lightIntersection
-						}
-					}
-
-					diffLightValue := 0.05
-					if !lightIntersection {
-						n := s.Pos.Subtract(intersect).Normalize()
-
-						diffLightValue += diffuseCoefficient * math.Max(0, n.Dot(lV)) * 0.95
-					}
-					//fmt.Printf("%s . %s = %.2f\n", lV, n, diffLightValue)
-					c := color.RGBA{
-						uint8(255 * diffLightValue),
-						uint8(255 * diffLightValue),
-						uint8(255 * diffLightValue),
-						255}
-
-					img.Set(x+255, y+255, c)
+				if i && (hitDist == -1.00 || dist < hitDist) {
+					hitDist = dist
+					hitSphere = s
+					intersect = camPos.Add(r.Dir.Scale(dist))
 				}
 			}
+
+			lightVector := light.Subtract(intersect).Normalize()
+
+			lightIntersection := false
+			lightRay := raktracer.Ray{intersect, lightVector}
+			for _, s2 := range spheres {
+				if s2 != hitSphere {
+					iL, _ := s2.Intersects(lightRay)
+					lightIntersection = iL || lightIntersection
+				}
+			}
+
+			diffLightValue := 0.05
+			if !lightIntersection {
+				n := hitSphere.Pos.Subtract(intersect).Normalize()
+
+				diffLightValue += diffuseCoefficient * math.Max(0, n.Dot(lightVector)) * 0.95
+			}
+			c := color.RGBA{
+				uint8(255 * diffLightValue),
+				uint8(255 * diffLightValue),
+				uint8(255 * diffLightValue),
+				255}
+
+			img.Set(x+imgWidth/2, y+imgHeight/2, c)
 		}
 	}
 
@@ -76,4 +85,6 @@ func main() {
 	}
 	defer f.Close()
 	png.Encode(f, img)
+
+	fmt.Println("Done!")
 }
