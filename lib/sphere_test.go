@@ -33,15 +33,15 @@ func TestSphereIntersects(t *testing.T) {
 		wantHit      bool
 		wantDistance float64
 	}{
-		{Sphere{Vector{0, 0, 10}, 1}, Ray{Vector{0, 0, 20}, Vector{0, 0, -1}}, true, 9},
 		{Sphere{Vector{0, 0, 10}, 1}, Ray{Vector{0, 0, 0}, Vector{0, 0, 1}}, true, 9},
+		{Sphere{Vector{0, 0, 10}, 1}, Ray{Vector{0, 0, 20}, Vector{0, 0, -1}}, true, 9},
 		{Sphere{Vector{0, 0, 10}, 1}, Ray{Vector{0, 0, 0}, Vector{0, 1, 0}}, false, 0},
 		{Sphere{Vector{0, 0, 0}, 4}, Ray{Vector{0, 5, 0}, Vector{0, -1, 0}}, true, 1},
-		{Sphere{Vector{0, 0, 0}, 20}, Ray{Vector{0, 5, 0}, Vector{0, -1, 0}}, true, 0},
+		{Sphere{Vector{0, 0, 0}, 20}, Ray{Vector{0, 5, 0}, Vector{0, -1, 0}}, false, 0},
 	}
 	for _, c := range cases {
 		gotHit, gotDistance := c.s.Intersects(c.r)
-		if gotHit != c.wantHit && gotDistance != c.wantDistance {
+		if gotHit != c.wantHit || gotDistance != c.wantDistance {
 			t.Errorf("%s.intersects(%s) expected %t, %.2f; got %t, %.2f", c.s, c.r, c.wantHit, c.wantDistance, gotHit, gotDistance)
 		}
 	}
