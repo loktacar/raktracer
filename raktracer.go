@@ -33,7 +33,7 @@ func main() {
 		}
 	}
 
-	camPos := raktracer.Vector{0, 0, -1000}
+	camPos := raktracer.Vector{0, 0, -10000}
 
 	for x := -imgWidth / 2; x < imgWidth/2; x++ {
 		for y := -imgHeight / 2; y < imgHeight/2; y++ {
@@ -69,15 +69,15 @@ func main() {
 				}
 			}
 
-			// Ambient light 10%
-			diffLightValue := 0.10
+			// Ambient light 5%
+			diffLightValue := 0.05
 			n := intersect.Subtract(hitSphere.Pos).Normalize()
 			reflectiveVector := n.Scale(2 * lightVector.Scale(-1).Dot(n)).Subtract(lightVector.Scale(-1)).Normalize()
 			if !lightIntersection {
 				// Diffuse light 60%
 				diffLightValue += 0.60 * math.Max(0, lightVector.Dot(n))
-				// Specular light 20%
-				diffLightValue += 0.20 * math.Pow(math.Max(0, reflectiveVector.Dot(r.Dir)), shininess)
+				// Specular light 25%
+				diffLightValue += 0.25 * math.Pow(math.Max(0, reflectiveVector.Dot(r.Dir)), shininess)
 			}
 			c := color.RGBA{
 				uint8(255 * diffLightValue),
