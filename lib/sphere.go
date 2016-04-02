@@ -2,6 +2,7 @@ package raktracer
 
 import (
 	"fmt"
+	"math"
 )
 
 type Sphere struct {
@@ -15,27 +16,21 @@ func (s Sphere) String() string {
 
 func (s Sphere) Intersects(r Ray) (bool, float64) {
 	// Algorithm source: http://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/minimal-ray-tracer-rendering-spheres
-	l := r.Pos.Subtract(s.Pos)
-
-	a := r.Dir.Dot(r.Dir)
-	b := 2 * r.Dir.Dot(l)
-	c := l.Dot(l) - s.R*s.R
-
-	// fmt.Printf("l: %.2f, a: %.2f, b: %.2f, c: %.2f\n", l, a, b, c)
-
-	solved, t0, t1 := SolveQuadratic(a, b, c)
-
-	// fmt.Printf("solved: %t, t0: %.2f, t1: %.2f\n", solved, t0, t1)
-
-	if !solved {
-		// fmt.Printf("Wasn't solved")
+	l := s.Pos.Subtract(r.Pos)
+	tca := l.Dot(r.Dir)
+	if tca < 0 {
 		return false, 0
 	}
+	d2 := l.Dot(l) - tca*tca
+	if d2 > s.R*s.R {
+		return false, 0
+	}
+	thc := math.Sqrt(s.R*s.R - d2)
+	t0 := tca - thc
+	t1 := tca + thc
 
 	if t0 < t1 {
-		k := t0
 		t0 = t1
-		t1 = k
 		if t0 < 0 {
 			// fmt.Printf("Something? %.2f, %.2f\n", t0, t1)
 			return false, 0
