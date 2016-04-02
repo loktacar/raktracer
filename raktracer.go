@@ -15,7 +15,7 @@ var imgHeight = 512
 
 var img = image.NewRGBA(image.Rect(0, 0, imgWidth, imgHeight))
 
-var black = color.RGBA{0, 0, 0, 255}
+var bg = color.RGBA{0, 0, 0, 255}
 
 var shininess = 100.00
 
@@ -29,7 +29,7 @@ func main() {
 
 	for x := 0; x < imgWidth; x++ {
 		for y := 0; y < imgHeight; y++ {
-			img.Set(x, y, black)
+			img.Set(x, y, bg)
 		}
 	}
 
@@ -69,15 +69,16 @@ func main() {
 				}
 			}
 
-			// Ambient light 5%
-			diffLightValue := 0.05
-			n := intersect.Subtract(hitSphere.Pos).Normalize()
-			reflectiveVector := n.Scale(2 * lightVector.Scale(-1).Dot(n)).Subtract(lightVector.Scale(-1)).Normalize()
+			diffLightValue := 0.03
 			if !lightIntersection {
+				// Ambient light 10%
+				diffLightValue = 0.10
+				n := intersect.Subtract(hitSphere.Pos).Normalize()
+				reflectiveVector := n.Scale(2 * lightVector.Scale(-1).Dot(n)).Subtract(lightVector.Scale(-1)).Normalize()
 				// Diffuse light 60%
 				diffLightValue += 0.60 * math.Max(0, lightVector.Dot(n))
-				// Specular light 25%
-				diffLightValue += 0.25 * math.Pow(math.Max(0, reflectiveVector.Dot(r.Dir)), shininess)
+				// Specular light 20%
+				diffLightValue += 0.20 * math.Pow(math.Max(0, reflectiveVector.Dot(r.Dir)), shininess)
 			}
 			c := color.RGBA{
 				uint8(255 * diffLightValue),
