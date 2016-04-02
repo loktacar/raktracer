@@ -33,11 +33,14 @@ func main() {
 		}
 	}
 
+	camPos := raktracer.Vector{0, 0, -1000}
+
 	for x := -imgWidth / 2; x < imgWidth/2; x++ {
 		for y := -imgHeight / 2; y < imgHeight/2; y++ {
-			camPos := raktracer.Vector{float64(x), float64(y), 0}
+			screenPos := raktracer.Vector{float64(x), float64(y), 0}
+			camVector := screenPos.Subtract(camPos).Normalize()
 
-			r := raktracer.Ray{camPos, raktracer.Vector{0, 0, 1}}
+			r := raktracer.Ray{camPos, camVector}
 
 			var hitDist = -1.00
 			var hitSphere raktracer.Sphere
