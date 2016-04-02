@@ -29,7 +29,7 @@ func (s Sphere) Intersects(r Ray) (bool, float64) {
 	t0 := tca - thc
 	t1 := tca + thc
 
-	if t0 < t1 {
+	if t0 > t1 {
 		t0 = t1
 		if t0 < 0 {
 			// fmt.Printf("Something? %.2f, %.2f\n", t0, t1)
