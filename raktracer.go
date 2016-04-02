@@ -10,19 +10,19 @@ import (
 	"os"
 )
 
-var imgWidth = 1024
-var imgHeight = 1024
+var imgWidth = 512
+var imgHeight = 512
 
 var img = image.NewRGBA(image.Rect(0, 0, imgWidth, imgHeight))
 
 var black = color.RGBA{0, 0, 0, 255}
 
-var diffuseCoefficient = 0.95
+var shininess = 100.00
 
 func main() {
 	spheres := []raktracer.Sphere{
-		raktracer.Sphere{raktracer.Vector{75, 0, 550}, 100},
-		raktracer.Sphere{raktracer.Vector{-75, 0, 450}, 100},
+		raktracer.Sphere{raktracer.Vector{75, 75, 450}, 100},
+		raktracer.Sphere{raktracer.Vector{-75, 0, 550}, 100},
 	}
 	light := raktracer.Vector{256, 512, -500}
 	//light := raktracer.Vector{0, 0, -1000}
@@ -48,9 +48,12 @@ func main() {
 				if i && (hitDist == -1.00 || dist < hitDist) {
 					hitDist = dist
 					hitSphere = s
-					intersect = camPos.Add(r.Dir.Scale(dist))
 				}
 			}
+			if hitDist == -1.00 {
+				continue
+			}
+			intersect = camPos.Add(r.Dir.Scale(hitDist))
 
 			lightVector := light.Subtract(intersect).Normalize()
 
@@ -63,11 +66,15 @@ func main() {
 				}
 			}
 
-			diffLightValue := 0.05
+			// Ambient light 10%
+			diffLightValue := 0.10
+			n := intersect.Subtract(hitSphere.Pos).Normalize()
+			reflectiveVector := n.Scale(2 * lightVector.Scale(-1).Dot(n)).Subtract(lightVector.Scale(-1)).Normalize()
 			if !lightIntersection {
-				n := hitSphere.Pos.Subtract(intersect).Normalize()
-
-				diffLightValue += diffuseCoefficient * math.Max(0, n.Dot(lightVector)) * 0.95
+				// Diffuse light 60%
+				diffLightValue += 0.60 * math.Max(0, lightVector.Dot(n))
+				// Specular light 20%
+				diffLightValue += 0.20 * math.Pow(math.Max(0, reflectiveVector.Dot(r.Dir)), shininess)
 			}
 			c := color.RGBA{
 				uint8(255 * diffLightValue),
