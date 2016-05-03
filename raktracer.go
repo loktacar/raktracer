@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/loktacar/raktracer/lib"
 	"image"
 	"image/color"
 	"image/png"
 	"math"
 	"os"
+
+	"github.com/loktacar/raktracer/lib"
 )
 
 var imgWidth = 512
