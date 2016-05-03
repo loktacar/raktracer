@@ -41,11 +41,10 @@ func main() {
 			camVector := screenPos.Subtract(camPos).Normalize()
 
 			r := raktracer.Ray{camPos, camVector}
+			fmt.Printf("r: %s\n", r)
 
 			var hitDist = -1.00
 			var hitSphere raktracer.Sphere
-			var intersect raktracer.Vector
-
 			for _, s := range spheres {
 				i, dist := s.Intersects(r)
 				if i && (hitDist == -1.00 || dist < hitDist) {
@@ -56,24 +55,26 @@ func main() {
 			if hitDist == -1.00 {
 				continue
 			}
-			intersect = camPos.Add(r.Dir.Scale(hitDist))
+			intersect := camPos.Add(r.Dir.Scale(hitDist))
 
 			lightVector := light.Subtract(intersect).Normalize()
 
+			n := intersect.Subtract(hitSphere.Pos).Normalize()
+
 			lightIntersection := false
-			lightRay := raktracer.Ray{intersect, lightVector}
+			lightRay := raktracer.Ray{intersect.Add(n.Scale(0.0001)), lightVector}
 			for _, s2 := range spheres {
-				if s2 != hitSphere {
-					iL, _ := s2.Intersects(lightRay)
-					lightIntersection = iL || lightIntersection
+				iL, _ := s2.Intersects(lightRay)
+				if iL {
+					lightIntersection = true
+					break
 				}
 			}
 
-			diffLightValue := 0.03
+			diffLightValue := 0.05
 			if !lightIntersection {
 				// Ambient light 10%
 				diffLightValue = 0.10
-				n := intersect.Subtract(hitSphere.Pos).Normalize()
 				reflectiveVector := n.Scale(2 * lightVector.Scale(-1).Dot(n)).Subtract(lightVector.Scale(-1)).Normalize()
 				// Diffuse light 60%
 				diffLightValue += 0.60 * math.Max(0, lightVector.Dot(n))
