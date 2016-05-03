@@ -21,8 +21,8 @@ var shininess = 100.00
 
 func main() {
 	spheres := []raktracer.Sphere{
-		raktracer.Sphere{raktracer.Vector{75, 75, 450}, 100},
-		raktracer.Sphere{raktracer.Vector{-75, 0, 550}, 100},
+		raktracer.NewSphere(raktracer.Vector{75, 75, 450}, 100),
+		raktracer.NewSphere(raktracer.Vector{-75, 0, 550}, 100),
 	}
 	light := raktracer.Vector{256, 512, -500}
 	//light := raktracer.Vector{0, 0, -1000}

@@ -8,10 +8,15 @@ import (
 type Sphere struct {
 	Pos Vector
 	R   float64
+	r2  float64
 }
 
 func (s Sphere) String() string {
 	return SphereString(s)
+}
+
+func NewSphere(pos Vector, r float64) Sphere {
+	return Sphere{pos, r, r * r}
 }
 
 func (s Sphere) Intersects(r Ray) (bool, float64) {
@@ -22,10 +27,10 @@ func (s Sphere) Intersects(r Ray) (bool, float64) {
 		return false, 0
 	}
 	d2 := l.Dot(l) - tca*tca
-	if d2 > s.R*s.R {
+	if d2 > s.r2 {
 		return false, 0
 	}
-	thc := math.Sqrt(s.R*s.R - d2)
+	thc := math.Sqrt(s.r2 - d2)
 	t0 := tca - thc
 	t1 := tca + thc
 
