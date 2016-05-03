@@ -17,7 +17,7 @@ func TestSphereConstructor(t *testing.T) {
 	for _, c := range cases {
 		got := NewSphere(c.v, c.r)
 		if got != c.want {
-			t.Errorf("SphereNew(%s, %.2f) expected %s, got %s", c.v, c.r, c.want, got)
+			t.Errorf("SphereNew(%s, %.2f) = %s, want %s", c.v, c.r, got, c.want)
 		}
 	}
 }
@@ -33,13 +33,13 @@ func TestSphereString(t *testing.T) {
 	for _, c := range cases {
 		got := SphereString(c.s)
 		if got != c.want {
-			t.Errorf("SphereString(%s) expected %s, got %s", c.s, c.want, got)
+			t.Errorf("SphereString(%s) = %s, want %s", c.s, got, c.want)
 		}
 	}
 	for _, c := range cases {
 		got := c.s.String()
 		if got != c.want {
-			t.Errorf("%s.String() expected %s, got %s", c.s, c.want, got)
+			t.Errorf("%s.String() = %s, want %s", c.s, got, c.want)
 		}
 	}
 }
@@ -60,7 +60,7 @@ func TestSphereIntersects(t *testing.T) {
 	for _, c := range cases {
 		gotHit, gotDistance := c.s.Intersects(c.r)
 		if gotHit != c.wantHit || gotDistance != c.wantDistance {
-			t.Errorf("%s.intersects(%s) expected %t, %.2f; got %t, %.2f", c.s, c.r, c.wantHit, c.wantDistance, gotHit, gotDistance)
+			t.Errorf("%s.intersects(%s) = %t, %.2f; want %t, %.2f", c.s, c.r, gotHit, gotDistance, c.wantHit, c.wantDistance)
 		}
 	}
 }

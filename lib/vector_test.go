@@ -16,13 +16,13 @@ func TestVectorString(t *testing.T) {
 	for _, c := range cases {
 		got := VectorString(c.v)
 		if got != c.want {
-			t.Errorf("VectorString(%s) expected %s, got %s", c.v, c.want, got)
+			t.Errorf("VectorString(%s) = %s, want %s", c.v, got, c.want)
 		}
 	}
 	for _, c := range cases {
 		got := c.v.String()
 		if got != c.want {
-			t.Errorf("%s.String() expected %s, got %s", c.v, c.want, got)
+			t.Errorf("%s.String() = %s, want %s", c.v, got, c.want)
 		}
 	}
 }
@@ -41,13 +41,13 @@ func TestVectorLength(t *testing.T) {
 	for _, c := range cases {
 		got := VectorLength(c.v)
 		if got != c.want {
-			t.Errorf("VectorLength(%s) expected %f, got %f", c.v, c.want, got)
+			t.Errorf("VectorLength(%s) = %f, want %f", c.v, got, c.want)
 		}
 	}
 	for _, c := range cases {
 		got := c.v.Length()
 		if got != c.want {
-			t.Errorf("%s.Length() expected %f, got %f", c.v, c.want, got)
+			t.Errorf("%s.Length() = %f, want %f", c.v, got, c.want)
 		}
 	}
 }
@@ -64,13 +64,13 @@ func TestAdd(t *testing.T) {
 	for _, c := range cases {
 		got := VectorsAdd(c.a, c.b)
 		if got != c.want {
-			t.Errorf("VectorsAdd(%s, %s) expected %s, got %s", c.a, c.b, c.want, got)
+			t.Errorf("VectorsAdd(%s, %s) = %s, want %s", c.a, c.b, got, c.want)
 		}
 	}
 	for _, c := range cases {
 		got := c.a.Add(c.b)
 		if got != c.want {
-			t.Errorf("%s.Add(%s) expected %s, got %s", c.a, c.b, c.want, got)
+			t.Errorf("%s.Add(%s) = %s, want %s", c.a, c.b, got, c.want)
 		}
 	}
 }
@@ -87,13 +87,13 @@ func TestSubtract(t *testing.T) {
 	for _, c := range cases {
 		got := VectorsSubtract(c.a, c.b)
 		if got != c.want {
-			t.Errorf("VectorsSubtract(%s, %s) expected %s, got %s", c.a, c.b, c.want, got)
+			t.Errorf("VectorsSubtract(%s, %s) = %s, want %s", c.a, c.b, got, c.want)
 		}
 	}
 	for _, c := range cases {
 		got := c.a.Subtract(c.b)
 		if got != c.want {
-			t.Errorf("%s.Subtract(%s) expected %s, got %s", c.a, c.b, c.want, got)
+			t.Errorf("%s.Subtract(%s) = %s, want %s", c.a, c.b, got, c.want)
 		}
 	}
 }
@@ -111,13 +111,13 @@ func TestScale(t *testing.T) {
 	for _, c := range cases {
 		got := VectorScaleByScalar(c.v, c.s)
 		if got != c.want {
-			t.Errorf("VectorScaleByScalar(%s, %f) expected %s, got %s", c.v, c.s, c.want, got)
+			t.Errorf("VectorScaleByScalar(%s, %f) = %s, want %s", c.v, c.s, got, c.want)
 		}
 	}
 	for _, c := range cases {
 		got := c.v.Scale(c.s)
 		if got != c.want {
-			t.Errorf("%s.Scale(%f) expected %s, got %s", c.v, c.s, c.want, got)
+			t.Errorf("%s.Scale(%f) = %s, want %s", c.v, c.s, got, c.want)
 		}
 	}
 }
@@ -135,24 +135,24 @@ func TestNormalize(t *testing.T) {
 	for _, c := range cases {
 		got := VectorNormalize(c.v)
 		if got != c.want {
-			t.Errorf("VectorNormalize(%s) expected %s, got %s", c.v, c.want, got)
+			t.Errorf("VectorNormalize(%s) = %s, want %s", c.v, got, c.want)
 		}
 	}
 	for _, c := range cases {
 		got := c.v.Normalize()
 		if got != c.want {
-			t.Errorf("Normalize(%s) expected %s, got %s", c.v, c.want, got)
+			t.Errorf("Normalize(%s) = %s, want %s", c.v, got, c.want)
 		}
 	}
 
 	v1 := Vector{0, 0, 0}
 	vN := VectorNormalize(v1)
 	if !math.IsNaN(vN.X) && !math.IsNaN(vN.Y) && !math.IsNaN(vN.Z) {
-		t.Errorf("VectorNormalize(%s) expected NaN results, got %s", v1, vN)
+		t.Errorf("VectorNormalize(%s) = %s, want NaN", v1, vN)
 	}
 	vN2 := v1.Normalize()
 	if !math.IsNaN(vN2.X) && !math.IsNaN(vN2.Y) && !math.IsNaN(vN2.Z) {
-		t.Errorf("%s.Normalize() expected NaN results, got %s", v1, vN2)
+		t.Errorf("%s.Normalize() = %s, want NaN", v1, vN2)
 	}
 }
 
@@ -170,13 +170,13 @@ func TestDotProduct(t *testing.T) {
 	for _, c := range cases {
 		got := VectorsDotProduct(c.a, c.b)
 		if got != c.want {
-			t.Errorf("VectorsDotProduct(%s, %s) expected %s, got %s", c.a, c.b, c.want, got)
+			t.Errorf("VectorsDotProduct(%s, %s) = %s, want %s", c.a, c.b, got, c.want)
 		}
 	}
 	for _, c := range cases {
 		got := c.a.Dot(c.b)
 		if got != c.want {
-			t.Errorf("%s.Dot(%s) expected %s, got %s", c.a, c.b, c.want, got)
+			t.Errorf("%s.Dot(%s) = %s, want %s", c.a, c.b, got, c.want)
 		}
 	}
 }
@@ -194,13 +194,13 @@ func TestCrossProduct(t *testing.T) {
 	for _, c := range cases {
 		got := VectorsCrossProduct(c.a, c.b)
 		if got != c.want {
-			t.Errorf("VectorsCrossProduct(%s, %s) expected %s, got %s", c.a, c.b, c.want, got)
+			t.Errorf("VectorsCrossProduct(%s, %s) = %s, want %s", c.a, c.b, got, c.want)
 		}
 	}
 	for _, c := range cases {
 		got := c.a.Cross(c.b)
 		if got != c.want {
-			t.Errorf("%s.Cross(%s) expected %s, got %s", c.a, c.b, c.want, got)
+			t.Errorf("%s.Cross(%s) = %s, want %s", c.a, c.b, got, c.want)
 		}
 	}
 }
