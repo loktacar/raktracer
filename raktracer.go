@@ -5,31 +5,33 @@ import (
 	"image/color"
 	"math"
 
-	"github.com/loktacar/raktracer/lib"
+	. "github.com/loktacar/raktracer/lib"
 )
 
-var imgWidth = 512
-var imgHeight = 512
+var imgWidth = 1024
+var imgHeight = 1024
 
 var shininess = 100.00
 
 func main() {
-	spheres := []raktracer.Sphere{
-		raktracer.NewSphere(raktracer.Vector{75, 75, 450}, 100),
-		raktracer.NewSphere(raktracer.Vector{-75, 0, 550}, 100),
+	spheres := []Sphere{
+		NewSphere(Vector{150, -75, -650}, 200),
+		NewSphere(Vector{-150, 0, -750}, 200),
 	}
-	light := raktracer.Vector{256, 512, -500}
-	//light := raktracer.Vector{0, 0, -1000}
+	light := Vector{256, -512, 500}
+	//light := Vector{0, 0, -1000}
 
-	camPos := raktracer.Vector{0, 0, -10000}
-
-	cam := raktracer.NewCamera(camPos, imgWidth, imgHeight)
+	cam := NewCamera(
+		Vector{0, 0, 0},
+		70,
+		imgWidth,
+		imgHeight)
 
 	for point := range cam.ImagePoints() {
-		r := cam.CameraRay(point.ScenePos)
+		r := point.SceneRay
 
 		var hitDist = -1.00
-		var hitSphere raktracer.Sphere
+		var hitSphere Sphere
 		for _, s := range spheres {
 			i, dist := s.Intersects(r)
 			if i && (hitDist == -1.00 || dist < hitDist) {
@@ -40,14 +42,14 @@ func main() {
 		if hitDist == -1.00 {
 			continue
 		}
-		intersect := camPos.Add(r.Dir.Scale(hitDist))
+		intersect := r.Pos.Add(r.Dir.Scale(hitDist))
 
 		lightVector := light.Subtract(intersect).Normalize()
 
 		n := intersect.Subtract(hitSphere.Pos).Normalize()
 
 		lightIntersection := false
-		lightRay := raktracer.Ray{intersect.Add(n.Scale(0.0001)), lightVector}
+		lightRay := Ray{intersect.Add(n.Scale(0.0001)), lightVector}
 		for _, s2 := range spheres {
 			iL, _ := s2.Intersects(lightRay)
 			if iL {
