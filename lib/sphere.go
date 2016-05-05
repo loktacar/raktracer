@@ -53,6 +53,10 @@ func (s Sphere) Intersects(r Ray) (intersects bool, dist float64) {
 	return true, t0
 }
 
+func (s Sphere) NormalVector(pos Vector) Vector {
+	return pos.Subtract(s.Pos).Normalize()
+}
+
 // SphereString returns a string representation of the sphere s.
 func SphereString(s Sphere) string {
 	return fmt.Sprintf("Sphere{Pos:%s R:%.2f}", s.Pos, s.R)

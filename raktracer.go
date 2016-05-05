@@ -43,10 +43,9 @@ func main() {
 			continue
 		}
 		intersect := r.Pos.Add(r.Dir.Scale(hitDist))
+		n := hitSphere.NormalVector(intersect)
 
 		lightVector := light.Subtract(intersect).Normalize()
-
-		n := intersect.Subtract(hitSphere.Pos).Normalize()
 
 		lightIntersection := false
 		lightRay := Ray{intersect.Add(n.Scale(0.0001)), lightVector}
