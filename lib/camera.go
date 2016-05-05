@@ -47,6 +47,7 @@ func NewCamera(origin Vector, fov float64, width int, height int) Camera {
 
 // ImagePoints returns a channel of each x,y pixel on the cameras image and it's corresponding camera ray.
 func (c Camera) ImagePoints() chan ImagePointRealRay {
+	// This algorithm based (stolen) from here http://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-generating-camera-rays/generating-camera-rays
 	ch := make(chan ImagePointRealRay)
 
 	floatWidth := float64(c.imgWidth)
@@ -70,6 +71,9 @@ func (c Camera) ImagePoints() chan ImagePointRealRay {
 					(1 - 2*(y+0.5)/floatHeight) * fovRatio * heightAspectRatio,
 					-1,
 				}
+
+				// TODO: matrix multiplication to rotate and translate the camera.
+
 				ch <- ImagePointRealRay{
 					int(x),
 					int(y),
