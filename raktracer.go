@@ -9,7 +9,7 @@ import (
 )
 
 var imgWidth = 1024
-var imgHeight = 1024
+var imgHeight = 768
 
 var shininess = 100.00
 
