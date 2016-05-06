@@ -18,6 +18,9 @@ func main() {
 		NewSphere(Vector{150, -75, -650}, 200),
 		NewSphere(Vector{-150, 0, -750}, 200),
 	}
+	planes := []Plane{
+		NewPlane(Vector{0, 0, -1000}, Vector{0, 0, -1}),
+	}
 	light := Vector{256, -512, 500}
 	//light := Vector{0, 0, -1000}
 
@@ -39,11 +42,27 @@ func main() {
 				hitSphere = s
 			}
 		}
+		intersect := r.Pos.Add(r.Dir.Scale(hitDist))
+		n := hitSphere.NormalVector(intersect)
+
+		planeCloser := false
+		var hitPlane Plane
+		for _, p := range planes {
+			i, dist := p.Intersects(r)
+			if i && (hitDist == -1.00 || dist < hitDist) {
+				hitDist = dist
+				hitPlane = p
+				planeCloser = true
+			}
+		}
+		if planeCloser {
+			intersect = r.Pos.Add(r.Dir.Scale(hitDist))
+			n = hitPlane.NormalVector(intersect)
+		}
+
 		if hitDist == -1.00 {
 			continue
 		}
-		intersect := r.Pos.Add(r.Dir.Scale(hitDist))
-		n := hitSphere.NormalVector(intersect)
 
 		lightVector := light.Subtract(intersect).Normalize()
 
