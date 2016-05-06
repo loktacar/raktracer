@@ -25,7 +25,7 @@ func TestPlaneString(t *testing.T) {
 		p    Plane
 		want string
 	}{
-		{Plane{Vector{0, 0, 0}, Vector{0, 0, 1}}, "Plane{P:[0.00 0.00 0.00] N:[0.00 0.00 1.00]}"},
+		{Plane{Vector{0, 0, 0}, Vector{0, 0, 1}}, "Plane{Pos:[0.00 0.00 0.00] Norm:[0.00 0.00 1.00]}"},
 	}
 	for _, c := range cases {
 		got := PlaneString(c.p)
