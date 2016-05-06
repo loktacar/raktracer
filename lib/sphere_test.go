@@ -60,7 +60,7 @@ func TestSphereIntersects(t *testing.T) {
 	for _, c := range cases {
 		gotHit, gotDistance := c.s.Intersects(c.r)
 		if gotHit != c.wantHit || gotDistance != c.wantDistance {
-			t.Errorf("%s.intersects(%s) = %t, %.2f; want %t, %.2f", c.s, c.r, gotHit, gotDistance, c.wantHit, c.wantDistance)
+			t.Errorf("%s.Intersects(%s) = %t, %.2f; want %t, %.2f", c.s, c.r, gotHit, gotDistance, c.wantHit, c.wantDistance)
 		}
 	}
 }
