@@ -36,5 +36,5 @@ func (p Plane) NormalVector(pos Vector) Vector {
 }
 
 func PlaneString(p Plane) string {
-	return fmt.Sprintf("Plane{P: %s N:%s}", p.P, p.N)
+	return fmt.Sprintf("Plane{P:%s N:%s}", p.P, p.N)
 }
