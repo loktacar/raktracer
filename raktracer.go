@@ -15,13 +15,14 @@ var shininess = 100.00
 
 func main() {
 	spheres := []Sphere{
-		NewSphere(Vector{150, -75, -650}, 200),
-		NewSphere(Vector{-150, 0, -750}, 200),
+		NewSphere(Vector{150, -75, -750}, 200),
+		NewSphere(Vector{-150, 0, -650}, 200),
 	}
 	planes := []Plane{
 		NewPlane(Vector{0, 0, -1000}, Vector{0, 0, -1}),
+		NewPlane(Vector{0, -350, 0}, Vector{0, -1, 0}),
 	}
-	light := Vector{256, -512, 500}
+	light := Vector{-256, 512, 500}
 	//light := Vector{0, 0, -1000}
 
 	cam := NewCamera(
