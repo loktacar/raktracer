@@ -109,16 +109,21 @@ func main() {
 			}
 		}
 
-		diffLightValue := 0.05
-		if !lightIntersection {
-			// Ambient light 10%
-			diffLightValue = 0.10
-			reflectiveVector := n.Scale(2 * lightVector.Scale(-1).Dot(n)).Subtract(lightVector.Scale(-1)).Normalize()
-			// Diffuse light 60%
-			diffLightValue += 0.60 * math.Max(0, lightVector.Dot(n))
-			// Specular light 20%
-			diffLightValue += 0.20 * math.Pow(math.Max(0, reflectiveVector.Dot(r.Dir)), shininess)
+		// Ambient light 10%
+		diffLightValue := 0.10
+
+		reflectiveVector := n.Scale(2 * lightVector.Scale(-1).Dot(n)).Subtract(lightVector.Scale(-1)).Normalize()
+
+		// Diffuse light 60%
+		diffLightValue += 0.60 * math.Max(0, lightVector.Dot(n))
+
+		// Specular light 20%
+		diffLightValue += 0.20 * math.Pow(math.Max(0, reflectiveVector.Dot(r.Dir)), shininess)
+
+		if lightIntersection {
+			diffLightValue *= 0.25
 		}
+
 		c := color.RGBA{
 			uint8(255 * diffLightValue),
 			uint8(255 * diffLightValue),
