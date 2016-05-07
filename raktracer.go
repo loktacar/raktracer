@@ -1,9 +1,11 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"image/color"
 	"math"
+	"os"
 
 	. "github.com/loktacar/raktracer/lib"
 )
@@ -13,23 +15,56 @@ var imgHeight = 768
 
 var shininess = 100.00
 
-func main() {
-	spheres := []Sphere{
-		NewSphere(Vector{150, -75, -750}, 200),
-		NewSphere(Vector{-150, 0, -650}, 200),
-	}
-	planes := []Plane{
-		NewPlane(Vector{0, 0, -1000}, Vector{0, 0, -1}),
-		NewPlane(Vector{0, -350, 0}, Vector{0, -1, 0}),
-	}
-	light := Vector{-256, 512, 500}
-	//light := Vector{0, 0, -1000}
+type SceneType struct {
+	Spheres []SphereType
+	Planes  []PlaneType
+	Light   LightType
+	Camera  CameraType
+}
 
-	cam := NewCamera(
-		Vector{0, 0, 0},
-		70,
-		imgWidth,
-		imgHeight)
+type SphereType struct {
+	Pos Vector
+	R   float64
+}
+
+type PlaneType struct {
+	Pos  Vector
+	Norm Vector
+}
+
+type LightType struct {
+	Pos Vector
+}
+
+type CameraType struct {
+	Pos       Vector
+	Fov       float64
+	ImgWidth  int
+	ImgHeight int
+}
+
+func main() {
+	sceneData, err := os.Open("scene.json")
+	if err != nil {
+		fmt.Printf("fuck")
+		return
+	}
+
+	sceneParser := json.NewDecoder(sceneData)
+	var scene SceneType
+	sceneParser.Decode(&scene)
+
+	var spheres []Sphere
+	for _, s := range scene.Spheres {
+		spheres = append(spheres, NewSphere(s.Pos, s.R))
+	}
+	var planes []Plane
+	for _, p := range scene.Planes {
+		planes = append(planes, NewPlane(p.Pos, p.Norm))
+	}
+	light := scene.Light.Pos
+
+	cam := NewCamera(scene.Camera.Pos, scene.Camera.Fov, scene.Camera.ImgWidth, scene.Camera.ImgHeight)
 
 	for point := range cam.ImagePoints() {
 		r := point.SceneRay
