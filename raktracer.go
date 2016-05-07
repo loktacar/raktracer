@@ -10,9 +10,6 @@ import (
 	. "github.com/loktacar/raktracer/lib"
 )
 
-var imgWidth = 1024
-var imgHeight = 768
-
 var shininess = 100.00
 
 type SceneType struct {
