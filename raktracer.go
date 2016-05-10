@@ -12,6 +12,9 @@ import (
 
 var shininess = 550.00
 
+var ambientCoefficient = 0.01
+var shadingCoefficient = 0.05
+
 type SceneType struct {
 	Spheres []SphereType
 	Planes  []PlaneType
@@ -20,13 +23,19 @@ type SceneType struct {
 }
 
 type SphereType struct {
-	Pos Vector
-	R   float64
+	Pos                 Vector
+	R                   float64
+	DiffuseCoefficient  float64
+	SpecularCoefficient float64
+	SpecularN           float64
 }
 
 type PlaneType struct {
-	Pos  Vector
-	Norm Vector
+	Pos                 Vector
+	Norm                Vector
+	DiffuseCoefficient  float64
+	SpecularCoefficient float64
+	SpecularN           float64
 }
 
 type LightType struct {
@@ -59,13 +68,12 @@ func main() {
 	var scene SceneType
 	sceneParser.Decode(&scene)
 
-	var spheres []Sphere
+	var objects []Object
 	for _, s := range scene.Spheres {
-		spheres = append(spheres, NewSphere(s.Pos, s.R))
+		objects = append(objects, NewSphere(s.Pos, s.R, s.DiffuseCoefficient, s.SpecularCoefficient, s.SpecularN))
 	}
-	var planes []Plane
 	for _, p := range scene.Planes {
-		planes = append(planes, NewPlane(p.Pos, p.Norm))
+		objects = append(objects, NewPlane(p.Pos, p.Norm, p.DiffuseCoefficient, p.SpecularCoefficient, p.SpecularN))
 	}
 	var lights []Light
 	for _, l := range scene.Lights {
@@ -83,79 +91,54 @@ func main() {
 		r := point.SceneRay
 
 		var hitDist = -1.00
-		var hitSphere Sphere
-		for _, s := range spheres {
-			i, dist := s.Intersects(r)
-			if i && (hitDist == -1.00 || dist < hitDist) {
+		//var hitObject Object
+		var intersect Vector
+		var n Vector
+		//var refDir Vector
+		var dC float64
+		var sC float64
+		var sN float64
+		//var rC float64
+		for _, o := range objects {
+			i, dist := o.Intersects(r)
+			if i && (hitDist == -1 || dist < hitDist) {
+				//hitObject = o
 				hitDist = dist
-				hitSphere = s
+				intersect = r.Pos.Add(r.Dir.Scale(hitDist))
+				n, _, dC, sC, sN, _ = o.SurfaceProperties(intersect, r.Dir)
 			}
-		}
-		intersect := r.Pos.Add(r.Dir.Scale(hitDist))
-		n := hitSphere.NormalVector(intersect)
-
-		planeCloser := false
-		var hitPlane Plane
-		for _, p := range planes {
-			i, dist := p.Intersects(r)
-			if i && (hitDist == -1.00 || dist < hitDist) {
-				hitDist = dist
-				hitPlane = p
-				planeCloser = true
-			}
-		}
-		if planeCloser {
-			intersect = r.Pos.Add(r.Dir.Scale(hitDist))
-			n = hitPlane.NormalVector(intersect)
 		}
 
 		if hitDist == -1.00 {
 			continue
 		}
 
-		rIntensity := 0.0
-		gIntensity := 0.0
-		bIntensity := 0.0
+		rIntensity := ambientCoefficient * 255
+		gIntensity := ambientCoefficient * 255
+		bIntensity := ambientCoefficient * 255
 
 		for _, l := range lights {
 			lightVector := l.Pos.Subtract(intersect).Normalize()
 
 			lightIntersection := false
 			lightRay := Ray{intersect.Add(n.Scale(0.0001)), lightVector}
-			for _, s2 := range spheres {
-				iL, _ := s2.Intersects(lightRay)
+			for _, o2 := range objects {
+				iL, _ := o2.Intersects(lightRay)
 				if iL {
 					lightIntersection = true
 					break
 				}
 			}
-			if !lightIntersection {
-				for _, p2 := range planes {
-					iL, _ := p2.Intersects(lightRay)
-					if iL {
-						lightIntersection = true
-						break
-					}
-				}
-			}
 
 			reflectiveVector := n.Scale(2 * lightVector.Scale(-1).Dot(n)).Subtract(lightVector.Scale(-1)).Normalize()
 
-			specularValue := math.Pow(math.Max(0, reflectiveVector.Dot(r.Dir)), shininess)
-
+			specularValue := math.Pow(math.Max(0, reflectiveVector.Dot(r.Dir)), sN)
 			diffuseValue := math.Max(0, lightVector.Dot(n))
 
-			// Ambient light 10%
-			shadingValue := 0.10
-
-			// Diffuse light 60%
-			shadingValue += 0.60 * diffuseValue
-
-			// Specular light 20%
-			shadingValue += 0.20 * specularValue
+			shadingValue := dC*diffuseValue + sC*specularValue
 
 			if lightIntersection {
-				shadingValue *= 0.05
+				shadingValue *= shadingCoefficient
 			}
 
 			rIntensity += float64(l.C.R) * shadingValue * l.Intensity

@@ -8,9 +8,13 @@ import (
 // A Sphere represents a sphere in euclidian space, with a center position
 // vector and a radius.
 type Sphere struct {
-	Pos Vector
-	R   float64
-	r2  float64
+	Pos                   Vector
+	R                     float64
+	DiffuseCoefficient    float64
+	SpecularCoefficient   float64
+	SpecularN             float64
+	ReflectiveCoefficient float64
+	r2                    float64
 }
 
 // String returns a string representation of the sphere s.
@@ -19,8 +23,8 @@ func (s Sphere) String() string {
 }
 
 // NewSphere returns a new sphere with the given position pos and radius r.
-func NewSphere(pos Vector, r float64) Sphere {
-	return Sphere{pos, r, r * r}
+func NewSphere(pos Vector, r float64, dC float64, sC float64, sN float64) Sphere {
+	return Sphere{pos, r, dC, sC, sN, 0, r * r}
 }
 
 // Intersects checks if the ray r intersects with the sphere s. If the ray
@@ -55,6 +59,13 @@ func (s Sphere) Intersects(r Ray) (intersects bool, dist float64) {
 
 func (s Sphere) NormalVector(pos Vector) Vector {
 	return pos.Subtract(s.Pos).Normalize()
+}
+
+func (s Sphere) SurfaceProperties(pos Vector, vDir Vector) (norm Vector, refDir Vector, dC float64, sC float64, sN float64, rC float64) {
+	norm = s.NormalVector(pos)
+	refDir = norm.Scale(2 * norm.Dot(vDir)).Subtract(vDir)
+
+	return norm, refDir, s.DiffuseCoefficient, s.SpecularCoefficient, s.SpecularN, s.ReflectiveCoefficient
 }
 
 // SphereString returns a string representation of the sphere s.

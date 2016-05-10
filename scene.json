@@ -6,7 +6,10 @@
         "Y": -75,
         "Z": -750
       },
-      "R": 200
+      "R": 200,
+      "DiffuseCoefficient": 0.7,
+      "SpecularCoefficient": 0.5,
+      "SpecularN": 750
     },
     {
       "Pos": {
@@ -14,7 +17,10 @@
         "Y": 0,
         "Z": -650
       },
-      "R": 200
+      "R": 200,
+      "DiffuseCoefficient": 0.7,
+      "SpecularCoefficient": 0.5,
+      "SpecularN": 750
     }
   ],
   "Planes": [
@@ -28,19 +34,25 @@
         "X": 0,
         "Y": 0,
         "Z": -1
-      }
+      },
+      "DiffuseCoefficient": 0.7,
+      "SpecularCoefficient": 0.0,
+      "SpecularN": 75
     },
     {
       "Pos": {
         "X": 0,
-        "Y": -350,
+        "Y": -300,
         "Z": 0
       },
       "Norm": {
         "X": 0,
         "Y": -1,
         "Z": 0
-      }
+      },
+      "DiffuseCoefficient": 0.7,
+      "SpecularCoefficient": 0.0,
+      "SpecularN": 75
     }
   ],
   "Lights": [
@@ -55,7 +67,7 @@
         "G": 0,
         "B": 0
       },
-      "Intensity": 1.0
+      "Intensity": 1.3
     },
     {
       "Pos": {
@@ -68,7 +80,7 @@
         "G": 0,
         "B": 255
       },
-      "Intensity": 1.0
+      "Intensity": 1.3
     },
     {
       "Pos": {
@@ -81,7 +93,7 @@
         "G": 255,
         "B": 0
       },
-      "Intensity": 1.0
+      "Intensity": 1.3
     }
   ],
   "Camera": {
@@ -91,7 +103,7 @@
       "Z": 0
     },
     "Fov": 70,
-    "ImgWidth": 4096,
-    "ImgHeight": 3072
+    "ImgWidth": 1024,
+    "ImgHeight": 768
   }
 }
