@@ -10,12 +10,12 @@ import (
 	. "github.com/loktacar/raktracer/lib"
 )
 
-var shininess = 100.00
+var shininess = 550.00
 
 type SceneType struct {
 	Spheres []SphereType
 	Planes  []PlaneType
-	Light   LightType
+	Lights  []LightType
 	Camera  CameraType
 }
 
@@ -30,7 +30,9 @@ type PlaneType struct {
 }
 
 type LightType struct {
-	Pos Vector
+	Pos       Vector
+	Color     ColorType
+	Intensity float64
 }
 
 type CameraType struct {
@@ -38,6 +40,12 @@ type CameraType struct {
 	Fov       float64
 	ImgWidth  int
 	ImgHeight int
+}
+
+type ColorType struct {
+	R uint8
+	G uint8
+	B uint8
 }
 
 func main() {
@@ -59,7 +67,15 @@ func main() {
 	for _, p := range scene.Planes {
 		planes = append(planes, NewPlane(p.Pos, p.Norm))
 	}
-	light := scene.Light.Pos
+	var lights []Light
+	for _, l := range scene.Lights {
+		lights = append(lights, NewLight(
+			l.Pos,
+			l.Color.R,
+			l.Color.G,
+			l.Color.B,
+			l.Intensity))
+	}
 
 	cam := NewCamera(scene.Camera.Pos, scene.Camera.Fov, scene.Camera.ImgWidth, scene.Camera.ImgHeight)
 
@@ -97,37 +113,60 @@ func main() {
 			continue
 		}
 
-		lightVector := light.Subtract(intersect).Normalize()
+		rIntensity := 0.0
+		gIntensity := 0.0
+		bIntensity := 0.0
 
-		lightIntersection := false
-		lightRay := Ray{intersect.Add(n.Scale(0.0001)), lightVector}
-		for _, s2 := range spheres {
-			iL, _ := s2.Intersects(lightRay)
-			if iL {
-				lightIntersection = true
-				break
+		for _, l := range lights {
+			lightVector := l.Pos.Subtract(intersect).Normalize()
+
+			lightIntersection := false
+			lightRay := Ray{intersect.Add(n.Scale(0.0001)), lightVector}
+			for _, s2 := range spheres {
+				iL, _ := s2.Intersects(lightRay)
+				if iL {
+					lightIntersection = true
+					break
+				}
 			}
-		}
+			if !lightIntersection {
+				for _, p2 := range planes {
+					iL, _ := p2.Intersects(lightRay)
+					if iL {
+						lightIntersection = true
+						break
+					}
+				}
+			}
 
-		// Ambient light 10%
-		diffLightValue := 0.10
+			reflectiveVector := n.Scale(2 * lightVector.Scale(-1).Dot(n)).Subtract(lightVector.Scale(-1)).Normalize()
 
-		reflectiveVector := n.Scale(2 * lightVector.Scale(-1).Dot(n)).Subtract(lightVector.Scale(-1)).Normalize()
+			specularValue := math.Pow(math.Max(0, reflectiveVector.Dot(r.Dir)), shininess)
 
-		// Diffuse light 60%
-		diffLightValue += 0.60 * math.Max(0, lightVector.Dot(n))
+			diffuseValue := math.Max(0, lightVector.Dot(n))
 
-		// Specular light 20%
-		diffLightValue += 0.20 * math.Pow(math.Max(0, reflectiveVector.Dot(r.Dir)), shininess)
+			// Ambient light 10%
+			shadingValue := 0.10
 
-		if lightIntersection {
-			diffLightValue *= 0.25
+			// Diffuse light 60%
+			shadingValue += 0.60 * diffuseValue
+
+			// Specular light 20%
+			shadingValue += 0.20 * specularValue
+
+			if lightIntersection {
+				shadingValue *= 0.05
+			}
+
+			rIntensity += float64(l.C.R) * shadingValue * l.Intensity
+			gIntensity += float64(l.C.G) * shadingValue * l.Intensity
+			bIntensity += float64(l.C.B) * shadingValue * l.Intensity
 		}
 
 		c := color.RGBA{
-			uint8(255 * diffLightValue),
-			uint8(255 * diffLightValue),
-			uint8(255 * diffLightValue),
+			uint8(math.Min(255.0, rIntensity)),
+			uint8(math.Min(255.0, gIntensity)),
+			uint8(math.Min(255.0, bIntensity)),
 			255}
 
 		cam.SetPoint(point.ImageX, point.ImageY, c)
