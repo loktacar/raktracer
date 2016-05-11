@@ -25,5 +25,5 @@ func NewLight(pos Vector, r uint8, g uint8, b uint8, intensity float64) Light {
 }
 
 func (l Light) String() string {
-	return fmt.Sprintf("Light{Pos: %s C: %s Intensity: %.0f}", l.Pos, l.C, l.Intensity)
+	return fmt.Sprintf("Light{Pos:%s C:{R:%d G:%d B:%d A:%d} Intensity:%.0f}", l.Pos, l.C.R, l.C.G, l.C.B, l.C.A, l.Intensity)
 }
