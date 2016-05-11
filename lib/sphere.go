@@ -23,8 +23,8 @@ func (s Sphere) String() string {
 }
 
 // NewSphere returns a new sphere with the given position pos and radius r.
-func NewSphere(pos Vector, r float64, dC float64, sC float64, sN float64) Sphere {
-	return Sphere{pos, r, dC, sC, sN, 0, r * r}
+func NewSphere(pos Vector, r float64, dC float64, sC float64, sN float64, rC float64) Sphere {
+	return Sphere{pos, r, dC, sC, sN, rC, r * r}
 }
 
 // Intersects checks if the ray r intersects with the sphere s. If the ray

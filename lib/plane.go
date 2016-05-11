@@ -19,8 +19,8 @@ func (p Plane) String() string {
 	return PlaneString(p)
 }
 
-func NewPlane(p, n Vector, dC float64, sC float64, sN float64) Plane {
-	return Plane{p, n.Normalize(), dC, sC, sN, 0}
+func NewPlane(p, n Vector, dC float64, sC float64, sN float64, rC float64) Plane {
+	return Plane{p, n.Normalize(), dC, sC, sN, rC}
 }
 
 func (p Plane) Intersects(r Ray) (intersects bool, dist float64) {

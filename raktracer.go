@@ -70,10 +70,10 @@ func main() {
 
 	var objects []Object
 	for _, s := range scene.Spheres {
-		objects = append(objects, NewSphere(s.Pos, s.R, s.DiffuseCoefficient, s.SpecularCoefficient, s.SpecularN))
+		objects = append(objects, NewSphere(s.Pos, s.R, s.DiffuseCoefficient, s.SpecularCoefficient, s.SpecularN, 0.0))
 	}
 	for _, p := range scene.Planes {
-		objects = append(objects, NewPlane(p.Pos, p.Norm, p.DiffuseCoefficient, p.SpecularCoefficient, p.SpecularN))
+		objects = append(objects, NewPlane(p.Pos, p.Norm, p.DiffuseCoefficient, p.SpecularCoefficient, p.SpecularN, 0.0))
 	}
 	var lights []Light
 	for _, l := range scene.Lights {
