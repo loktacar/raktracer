@@ -32,12 +32,6 @@ func TestPlaneString(t *testing.T) {
 		{Plane{Vector{0, 0, 0}, Vector{0, 0, 1}, 1, 1, 1, 1}, "Plane{Pos:[0.00 0.00 0.00] Norm:[0.00 0.00 1.00]}"},
 	}
 	for _, c := range cases {
-		got := PlaneString(c.p)
-		if got != c.want {
-			t.Errorf("PlaneString(%s) = %s, want %s", c.p, got, c.want)
-		}
-	}
-	for _, c := range cases {
 		got := c.p.String()
 		if got != c.want {
 			t.Errorf("%s.String() = %s, want %s", c.p, got, c.want)

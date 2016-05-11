@@ -19,7 +19,7 @@ type Sphere struct {
 
 // String returns a string representation of the sphere s.
 func (s Sphere) String() string {
-	return SphereString(s)
+	return fmt.Sprintf("Sphere{Pos:%s R:%.2f}", s.Pos, s.R)
 }
 
 // NewSphere returns a new sphere with the given position pos and radius r.
@@ -66,9 +66,4 @@ func (s Sphere) SurfaceProperties(pos Vector, vDir Vector) (norm Vector, refDir 
 	refDir = norm.Scale(2 * norm.Dot(vDir)).Subtract(vDir)
 
 	return norm, refDir, s.DiffuseCoefficient, s.SpecularCoefficient, s.SpecularN, s.ReflectiveCoefficient
-}
-
-// SphereString returns a string representation of the sphere s.
-func SphereString(s Sphere) string {
-	return fmt.Sprintf("Sphere{Pos:%s R:%.2f}", s.Pos, s.R)
 }

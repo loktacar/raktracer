@@ -19,12 +19,6 @@ func TestRayString(t *testing.T) {
 		},
 	}
 	for _, c := range cases {
-		got := RayString(c.r)
-		if got != c.want {
-			t.Errorf("%s.String() = %s, want %s", c.r, got, c.want)
-		}
-	}
-	for _, c := range cases {
 		got := c.r.String()
 		if got != c.want {
 			t.Errorf("%s.String() = %s, want %s", c.r, got, c.want)

@@ -16,7 +16,7 @@ type Plane struct {
 }
 
 func (p Plane) String() string {
-	return PlaneString(p)
+	return fmt.Sprintf("Plane{Pos:%s Norm:%s}", p.Pos, p.Norm)
 }
 
 func NewPlane(p, n Vector, dC float64, sC float64, sN float64, rC float64) Plane {
@@ -45,8 +45,4 @@ func (p Plane) SurfaceProperties(pos Vector, vDir Vector) (norm Vector, refDir V
 	refDir = norm.Scale(2 * norm.Dot(vDir)).Subtract(vDir)
 
 	return norm, refDir, p.DiffuseCoefficient, p.SpecularCoefficient, p.SpecularN, p.ReflectiveCoefficient
-}
-
-func PlaneString(p Plane) string {
-	return fmt.Sprintf("Plane{Pos:%s Norm:%s}", p.Pos, p.Norm)
 }

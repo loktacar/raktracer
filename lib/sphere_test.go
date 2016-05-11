@@ -35,12 +35,6 @@ func TestSphereString(t *testing.T) {
 		{Sphere{Vector{1, 2, 3}, 0.99, 1, 1, 1, 1, 0.9801}, "Sphere{Pos:[1.00 2.00 3.00] R:0.99}"},
 	}
 	for _, c := range cases {
-		got := SphereString(c.s)
-		if got != c.want {
-			t.Errorf("SphereString(%s) = %s, want %s", c.s, got, c.want)
-		}
-	}
-	for _, c := range cases {
 		got := c.s.String()
 		if got != c.want {
 			t.Errorf("%s.String() = %s, want %s", c.s, got, c.want)

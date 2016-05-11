@@ -12,7 +12,7 @@ type Vector struct {
 
 // String returns a string representation of the vector a.
 func (a Vector) String() string {
-	return VectorString(a)
+	return fmt.Sprintf("[%.2f %.2f %.2f]", a.X, a.Y, a.Z)
 }
 
 // Length returns the lenght of the euclidian vector a.
@@ -51,11 +51,6 @@ func (a Vector) Dot(b Vector) float64 {
 // Cross returns a new vector which is the cross product of a and b.
 func (a Vector) Cross(b Vector) Vector {
 	return VectorsCrossProduct(a, b)
-}
-
-// VectorString returns a string representation of the vector a.
-func VectorString(a Vector) string {
-	return fmt.Sprintf("[%.2f %.2f %.2f]", a.X, a.Y, a.Z)
 }
 
 // VectorLength returns the lenght of the euclidian vector a.

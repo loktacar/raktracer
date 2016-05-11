@@ -14,12 +14,6 @@ func TestVectorString(t *testing.T) {
 		{Vector{1, 0.5, 0.99}, "[1.00 0.50 0.99]"},
 	}
 	for _, c := range cases {
-		got := VectorString(c.v)
-		if got != c.want {
-			t.Errorf("VectorString(%s) = %s, want %s", c.v, got, c.want)
-		}
-	}
-	for _, c := range cases {
 		got := c.v.String()
 		if got != c.want {
 			t.Errorf("%s.String() = %s, want %s", c.v, got, c.want)
