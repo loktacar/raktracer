@@ -118,13 +118,15 @@ func main() {
 		bIntensity := ambientCoefficient * 255
 
 		for _, l := range lights {
-			lightVector := l.Pos.Subtract(intersect).Normalize()
+			lightVector := l.Pos.Subtract(intersect)
+			lightDistance := lightVector.Length()
+			lightVector = lightVector.Normalize()
 
 			lightIntersection := false
 			lightRay := Ray{intersect.Add(n.Scale(0.0001)), lightVector}
 			for _, o2 := range objects {
-				iL, _ := o2.Intersects(lightRay)
-				if iL {
+				iL, t := o2.Intersects(lightRay)
+				if iL && t <= lightDistance {
 					lightIntersection = true
 					break
 				}
